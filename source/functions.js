@@ -1,5 +1,5 @@
 import{FormValidator} from "./classes.js"
-
+import { v4 as uuidv4 } from 'uuid';
 
 const formEl=document.querySelector("#form");
 const titleEl=document.querySelector("#title");
@@ -38,7 +38,14 @@ const addBookToLibrary=()=>{
       "total pages":totalPagesEl.value,
       "current page":currentPageEl.value,
       completed:completedEl.checked,
+      id:uuidv4(),
     })
+    //clear each field in our fields array inside our form
+    fieldsArray.forEach((field)=>{
+      field.value=""
+    })
+    completedEl.checked=false;
+    //save the book to our myLibrary array
     saveBook();
 }
 
