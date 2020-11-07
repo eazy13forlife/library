@@ -5,9 +5,48 @@
     <meta name="description" content="this is my library exercise for the odin project" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta charset="utf-8"/>
-    <link href="" rel="stylesheet">
+    <link href="./styles/library.css" rel="stylesheet">
   </head>
   <body>
+    <h1>Library</h1>
+    <input type="submit" value="+" id="plus_sign" />
+    <form action="urlofthepageontheserverthatreceivestheinfo" method="post" id="form">
+      <div class="form-item">
+        <p><label for="title">Title</label></p>
+        <p><input type="text" name="title" id="title" /></p>
+        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+        <span id="error_message"></span>
+      </div>
+      <div class="form-item">
+        <p><label for="author">Author</label></p>
+        <p><input type="text" name="author" id="author" /></p>
+        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+        <span id="error_message"></span>
+      </div>
+      <div class="form-item">
+        <p><label for="total_pages">Total Pages</label></p>
+        <p><input type="text" name="author" id="total_pages"/></p>
+        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+        <span id="error_message"></span>
+      </div>
+      <div class="form-item">
+        <p><label for="current_page">Current Page</label></p>
+        <p><input type="text" name="author" id="current_page"/></p>
+        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+        <span id="error_message"></span>
+      </div>
+      <div class="form-item">
+        <input type="checkbox" name="completed" value="yes" id="completed"/><label for="completed">Completed</label>
+      </div>
+      <div class="form-item">
+        <input type="submit" value="Add Book" />
+      </div>
+    </form>
+
+    <div class="library">
+
+    </div>
+
 
 
 
