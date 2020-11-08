@@ -46,14 +46,30 @@ const addBookToLibrary=()=>{
     })
     completedEl.checked=false;
     //save the book to our myLibrary array
-    saveBook();
+    saveLibrary();
 }
 
 //save book to our localStorage
-const saveBook=()=>{
+const saveLibrary=()=>{
   localStorage.setItem("myLibrary",JSON.stringify(myLibrary));
 }
 
+//remove a book from our library
+const removeBook=(bookId)=>{
+  const index=myLibrary.findIndex((book)=>book.id===bookId);
+  if(index!==-1){
+    myLibrary.splice(index,1);
+    saveLibrary();
+  }
+}
 
+//toggle book completed
+const toggleCompleted=(bookId)=>{
+  const book=myLibrary.find((book)=>book.id===bookId)
+  if(book){
+    book.completed=!book.completed;
+    saveLibrary();
+  }
+}
 
-export{addBookToLibrary,getMyLibrary,saveBook,validator,formEl,myLibrary}
+export{addBookToLibrary,getMyLibrary,saveLibrary,validator,formEl,myLibrary,removeBook,toggleCompleted}

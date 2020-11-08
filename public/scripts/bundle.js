@@ -16440,7 +16440,7 @@ exports.FormValidator = FormValidator;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.myLibrary = exports.formEl = exports.validator = exports.saveBook = exports.getMyLibrary = exports.addBookToLibrary = undefined;
+exports.toggleCompleted = exports.removeBook = exports.myLibrary = exports.formEl = exports.validator = exports.saveLibrary = exports.getMyLibrary = exports.addBookToLibrary = undefined;
 
 var _classes = __webpack_require__(/*! ./classes.js */ "./source/classes.js");
 
@@ -16489,20 +16489,65 @@ var addBookToLibrary = function addBookToLibrary() {
   });
   completedEl.checked = false;
   //save the book to our myLibrary array
-  saveBook();
+  saveLibrary();
 };
 
 //save book to our localStorage
-var saveBook = function saveBook() {
+var saveLibrary = function saveLibrary() {
   localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+};
+
+//remove a book from our library
+var removeBook = function removeBook(bookId) {
+  var index = myLibrary.findIndex(function (book) {
+    return book.id === bookId;
+  });
+  if (index !== -1) {
+    myLibrary.splice(index, 1);
+    saveLibrary();
+  }
+};
+
+//toggle book completed
+var toggleCompleted = function toggleCompleted(bookId) {
+  var book = myLibrary.find(function (book) {
+    return book.id === bookId;
+  });
+  if (book) {
+    book.completed = !book.completed;
+    saveLibrary();
+  }
 };
 
 exports.addBookToLibrary = addBookToLibrary;
 exports.getMyLibrary = getMyLibrary;
-exports.saveBook = saveBook;
+exports.saveLibrary = saveLibrary;
 exports.validator = validator;
 exports.formEl = formEl;
 exports.myLibrary = myLibrary;
+exports.removeBook = removeBook;
+exports.toggleCompleted = toggleCompleted;
+
+/***/ }),
+
+/***/ "./source/icons.js":
+/*!*************************!*\
+  !*** ./source/icons.js ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var redCheckmark = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFWUlEQVRoge2Ya0yVdRzHP89zrlwPIhw5OIgEFBEBgVDsYMq8JTqWWa7lUtZ4UW3aqvWCN2mj5qYrN9PWi9oqU7dytdyqObyChUAoJQtRvHBRrnI9HDjnOc/TC6QhnBsg0Ivzefn/ff+/fX/n+d9+B3z48OHDxxRQzbaBMQQAhUAoUDvLXiZMDtCoE8XbQAOgnWU/E+IdwPJG7PzS5lyzQy+Kt4Bd3kz8PyyhQlHg/R+ylj7YER2RJggIvXZHTWVXbxxw3NNkYQYMuuMDAfb8kp3amWoIjBsZbLQOtWWerQgCwgGLuwTidDt0Q74Ae06bUzpGmweI8tMZ/dRiA7DWU5LZKmAFcPjL9ISG9JCgeGeC1WFzWoBcT4lmo4AI4FR+jKnqeVNYiitRwdORRmAbEOgu2UwXIALfxAf6N3ycFJvtTpg117A4UK1uAQrc6Wb6FHpXIwi5pWsyntKpRI/nvKQodb939hQAzUCVM81MfoE0YN+x5Uk9wRqV22UB0DJkaz1a3xgCXAK+d6WbqQJ0wNd5keGVq8IMSZ7Ef/f012UUV9gtklwNrAN6XGlnqoC9AWpRfXjZwixPwiP1zaUbSq5FOhTlGLADsLnTe7MH4oC7j7R/ALIXc0azHDj687Mplvl6XbgrkaQo0ray6yXHG1qWAjuBI94kV3uh2RqkUTdKDvk1qyybgRfxcDuOQgV8vjUyvDLVELjKlWhAkvtXXKiobR+0G4FM4JaX+b1aQnn5MaaHNRtWRBl12nDgJ0DjZf4CrSjM/TQ1foUrQa8k9aafLa9vH7QPAVlMwDx4LsAIZObHmBb5qUT9lZyMxGCN2gQc9iJ3KFC0Pym2TSs6PzK7bNLD9OLypm671AVsxM1mdYWnAlYHqMWbEcO/PHqVqL/wXJpRJQh5wNse5n4YodPeeyU6IsNZsE9y9GWcK2/tl+QmYBPQP1Hz4LkAc0pwUPvoAZNeG34qK6kbKAI2u5i3GHj9m8zEEGdBu6wMrTxXeXNAktuAPMA6Qd//4amA7C2RYeM+//JQQ8KB5Nha4Dsg1cm8A6khQZVLDYELxgYUkNeWVF3psNm1wAvA4GSMj+CuADWw8FJH94Di5OjcEW1KfzU6oho4DZhGhdYCa77KSFjoLOmuipqLdX3WKGA90DV568O4K0AC1v/a0rlgWXF5Zb/kGLdGDybHZScE+TcCXzwaUgEHt5jCKkx6nXGs/mRD65UzrV3pDD+TH0zVPHjXkRmAH4M06rDKnGeigjWqx9Z1r93Rv+RMWbekKIWAVi0I++o2ZoX6qUS/0brbFmuD+fyfQQq8CZx8EubBu3ugB8jts0tNK89X3pYU5bGrPVijCvwsbVE7cAgoKloS2zzWvKQotvUlV/sVOPYkzYP3byEr8FKnzS5uKq0uGxvMM4Uti/bX3zLqtPd3xkRkjo3vvnbjskWSrcB7U/Q7jok29VFA+fboef8cSo5fMzpgdchWlYBq7KV1vddyc92lq5GAGbg2NbvjmWhD0wuU1vRYCiP0uvJkQ2D0SEAjChqVIDyWz6EojlUXq1pssnwC+PYJ+B3HZDqyZuBOcevDghzjnDsmvS7MlXD/jXslJR3d4cDLgH2yJt0x2X7ghAKfbLn8l3/7kM3pcdhnd/QfqW9KZPhft4FJO/TAVBqavQ5FKcu+UNU2JMvjngK7q+sqZIVahl+v08ZUClCAnT12yWY+X1XtUBRpJHDPMtj0W0tnJtNw6kwHRqA20RBw8f5ms/xgs1mJ8ddfZpo27XQRBdxdOddQ/FHSglKG3zjzZtnThIln+H1jBbbPspdJkwS8NdsmfPjw4WPm+Bf4a7RDx97GWAAAAABJRU5ErkJggg==";
+
+var greenCheckmark = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFaElEQVRoge2Xa1BUZRjHf+cse1iRDUFYLkUUAoKKXETCgsrGlARTS3OmGRUzvKQTjjnNhNOo5fjBnErxMsZUk5ndxsrqU2PTlHhDVMgMFAJFUMELIizL3s7pw6pDLHuBRbYP+/v4Pv/3mf9z3st5XvDhw4cPHx6g8raBXgwHioEQoMbLXvrNM8AlUVLVA42A5GU//WI1oI+anVX2+I9rraKkrgMK3Jn4f9hCxQjCm2M3zb8SkZuejiAIFr3xbEdNUxywz9VkcQgMOmMdgrAmecuitqDkmMS7gxH5GaOBydjOhFO8WcAiBKFo/OaC69qEqLieAY0uSCdqpEZgiqsk3iogCyhJLJ7TGJj4YHxfguC02KtAnqtE3iggAtgfkTfxVEjW6BSHovyJOmAOEOgs2VAXIAJ7hj0U1hi7bFqOM2HQ+JgkMUC6ChQ60w31LfSGoBLz0j9aESOqVS7vecWqnL995kIh0Ayc6kszlCuQDmxI2vByuypAcrotAEw3Olqa9x8ZAfwBfOtIN1QF+AOfheaMqRiR8sg4V2J9/dXzJxeXmOVuUxXwLNDuSOs3iCadsV7USH7xq2dNciVs/u5o2cVPf00FtmPrixRnenfOQBxw4Y72KCC7MacnjwE7x28u0EthD4Q5EilW2fL32r2HWn45nQwsBHa4k9ydFXjBL8D/kmyVF8hGczbwIqB3Jzm2oneFPjWuYnh85JOORLLR3Hny1e015lt6HZAJ1LmZ360zMDM8L+Nm5t7V0VJwYBjwA6B2M3+hoBZHxhXNyHIksOqNtysKtv1jvqU3ApPoh3lwXYAOyIzMzxgtatSa9NKVY/yG+0cCJW7kDgE2xi7La3V0ZVo6DDdPFGxtsnQa2oBcnBxWR7gq4GlRI9VKIdowANHfT5O6Y5lOEIWZwCoXc9+RggMvhk9NyegraO0ydlS8UtIid5uagOlAZ3/Ng+sCsrXxUdd6DkgjtWFjNy24BWwE8h3MSwIWJ62bN6KvoGKxGk8t2Vkrd5tagZmAoZ++7+GqgJyQJxLtlv+BsdGJo17LqwG+AFL7mPeeNiGqYvioyFi7iIJc+XrpcXO7XgJmA90D8H0PZwX4AQm3qxq6UOyvzvDn0ibopqVVAT8BkT1CU4DJiW/NTegrafXGb343XLoeDUwF2gZu3YazAizA1BtHz8VWFGytsBpMdns0bmVeTkCM7hKw+86QCtgyMjvphDpUq+utbz1Ydbyt/PwEbG3yFU/Ng+stdBhINd3s0J9ctLXBou++1VuQvLkgWVCJacB8oEBQiaHxq57P7K3rvnyjsW7bzwnAUqB6MMyDe/+BdiDPojc2nV66s16xyqaeQVWAFBi/ZtY14ENg46NLpjaL/uphPTWKVTZVFn3ciaLsBb4aLPPgfjNnAOaa27vEM6s/OdY7GJo9Jk0TMaJOCg68HDE9w+7r175/4LDcbTIAazz0a4fQT300UB42JaU6vmjG5J4B2Wg2IIqq3j8tfX1LbVVRaRSQDVR6Ztee/j5obgNlXfUtxepQbXngqMiH7wYEP5VaUIn/yafIirVy+a6rstn6JfD5IPi1YyAvsmagoa28tjB4QlyDFKoNdSRs3PPbofaqC2HAS4B5oCadMdAn5V+ApvVgVWZEblqXapik7S2wdpk6q9/9OhhYCZzxxKQzPHmRrVdk+djp5btbZbPFrhWo++DACRSlBlv3et/wpAAFWGjRG0yVy3ZVKbJiuRswtrQ13Th2LpP7cOv0xtM3sQHI725tD/5zVekRFNvz7+zb+xqB74FyTw0OFdHAhaDkmIOxS3PLsPU44V721G/isfU3BmCel70MmHHACm+b8OHDh4+h41+PYq6RO2Vi1wAAAABJRU5ErkJggg==";
+exports.redCheckmark = redCheckmark;
+exports.greenCheckmark = greenCheckmark;
 
 /***/ }),
 
@@ -16522,8 +16567,6 @@ var _classes = __webpack_require__(/*! ./classes.js */ "./source/classes.js");
 
 var _views = __webpack_require__(/*! ./views.js */ "./source/views.js");
 
-localStorage.clear();
-
 //our second submit event when we click Add Book.
 _functions.formEl.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -16538,6 +16581,11 @@ _functions.formEl.addEventListener("submit", function (e) {
 //event listner when we click the plus sign, our form pops up in the center
 document.querySelector("#plus_sign").addEventListener("click", function (e) {
   _functions.formEl.style.display = "block";
+});
+
+//event listener when we click the X on our form
+document.querySelector("#close_form").addEventListener("click", function (e) {
+  _functions.formEl.style.display = "none";
 });
 
 /***/ }),
@@ -16559,6 +16607,8 @@ exports.displayBooks = undefined;
 
 var _functions = __webpack_require__(/*! ./functions.js */ "./source/functions.js");
 
+var _icons = __webpack_require__(/*! ./icons.js */ "./source/icons.js");
+
 //function thats appends all your children to a parent element
 var appendChildren = function appendChildren(parentElement) {
   for (var _len = arguments.length, children = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -16575,7 +16625,6 @@ var displayBooks = function displayBooks() {
   //we clear the the container where we append each bookCard, before running through our book array and displaying each bookCard on our screen.
   document.querySelector(".library").innerHTML = "";
   _functions.myLibrary.forEach(function (book) {
-    console.log(book.id);
     var infoCard = document.createElement("div");
     infoCard.classList.add("info-card");
     var titleCardEl = document.createElement("H1");
@@ -16587,21 +16636,64 @@ var displayBooks = function displayBooks() {
     var totalPagesCardEl = document.createElement("p");
     totalPagesCardEl.textContent = book["total pages"] + " pages";
 
-    //if completed is checked,
+    //create remove card button and add event listener so that when you click it, the book is removed from the library
+    var removeCardEl = document.createElement("button");
+    removeCardEl.textContent = "Remove";
+    removeCardEl.addEventListener("click", function (e) {
+      (0, _functions.removeBook)(book.id);
+      displayBooks();
+    });
+
+    //create a toggle button and add event listener so that when you click it, book.completed toggles between true and false and shows the appropriate message
+    var toggleCompletedEl = document.createElement("button");
+    toggleCompletedEl.setAttribute("id", "toggle_button");
+    var image = document.createElement("img");
+    image.setAttribute("class", "checkmark");
+    //if book is completed,the checkmark is red, because you've clicked the green button,meaning you finished the book.
     if (book.completed === true) {
-      var completedCardEl = document.createElement("p");
+      image.setAttribute("src", _icons.redCheckmark);
+    } else {
+      image.setAttribute("src", _icons.greenCheckmark);
+    }
+    /*
+    //now if you hover over the checkmark,thats an indication that you want to change status of your book from finished to not finished or vice versa. If you havent finished the book, but hover over the checkmark, it will show red, which means the book is finished.If you have finished the book, but hover over the checkmark, it will show green meaning that the book is not finished.
+    image.addEventListener("mouseover",(e)=>{
+      if(book.completed===false){
+        image.setAttribute("src",redCheckmark)
+      }else{
+        image.setAttribute("src",greenCheckmark)
+      }
+    })
+    //when mouseout, transition to the original color
+    image.addEventListener("mouseout",(e)=>{
+      if(book.completed===true){
+        image.setAttribute("src",redCheckmark)
+      }else{
+        image.setAttribute("src",greenCheckmark)
+      }
+    */
+    //we append the image to the toggle button
+    toggleCompletedEl.appendChild(image);
+    toggleCompletedEl.addEventListener("click", function (e) {
+      (0, _functions.toggleCompleted)(book.id);
+      displayBooks();
+    });
+
+    //if the book in the library is completed
+    if (book.completed === true) {
+      var completedCardEl = document.createElement("h3");
       completedCardEl.textContent = "Finished!";
-      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, completedCardEl);
+      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, completedCardEl, removeCardEl, toggleCompletedEl);
     } else {
       var currentPageCardEl = document.createElement("p");
       currentPageCardEl.textContent = "on page " + book["current page"];
-      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, currentPageCardEl);
+      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, currentPageCardEl, removeCardEl, toggleCompletedEl);
     }
     document.querySelector(".library").appendChild(infoCard);
   });
 };
 
-//I need to add a delete button on the card and a checkmark if book is finished or not or a finished button and a way to undo this button
+// checkmark if book is finished or not or a finished button and a way to undo this button,finished says completed, if not,it doesnt say it
 
 exports.displayBooks = displayBooks;
 

@@ -1,9 +1,9 @@
-import{addBookToLibrary,saveBook,validator,formEl} from "./functions.js"
+import{addBookToLibrary,validator,formEl} from "./functions.js"
 import{FormValidator,Book} from "./classes.js"
 import{displayBooks} from "./views.js"
 
 
-localStorage.clear();
+
 
 //our second submit event when we click Add Book.
 formEl.addEventListener("submit",(e)=>{
@@ -19,4 +19,9 @@ formEl.addEventListener("submit",(e)=>{
 //event listner when we click the plus sign, our form pops up in the center
 document.querySelector("#plus_sign").addEventListener("click",(e)=>{
   formEl.style.display="block"
+})
+
+//event listener when we click the X on our form
+document.querySelector("#close_form").addEventListener("click",(e)=>{
+  formEl.style.display="none"
 })

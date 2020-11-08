@@ -13,6 +13,8 @@ body{
   position:relative;
   height:100vh;
 }
+
+/**form element**/
 form{
   border:1px solid black;
   width:200px;
@@ -57,6 +59,23 @@ form{
   border:2px solid red;
   padding:0.3em;
 }
+
+#close_form{
+  background:none;
+  border:1px solid black;
+  border-radius:50%;
+  font-size:1.5rem;
+}
+
+#close_form:active{
+  background-color:green;
+  color:yellow;
+}
+/**end of form element**/
+
+
+
+/** individual book cards**/
 .library{
   margin:auto;
   width:70%;
@@ -66,7 +85,7 @@ grid-template-columns:repeat(3,1fr);
 grid-auto-rows:200px;
 }
 
-/**javasscript class**/
+/**javascript class**/
 div.info-card{
   display:flex;
   flex-direction:column;
@@ -75,3 +94,13 @@ div.info-card{
   width:100%;
   background-color:white;
 }
+button#toggle_button{
+  background:none;
+  border:none;
+}
+.checkmark{
+width:48px;
+}
+  
+}
+/**end of individual book cards**/
