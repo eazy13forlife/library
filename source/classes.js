@@ -1,21 +1,22 @@
 //need a class of success and error(most likely on the div element that contains the form field and everything it contains)
 //need an id of password and password_confirm for the input fields
 //need an id of error_message
+
 class FormValidator{
   constructor(form,fields){
     this.form=form;
     this.fields=fields;
-    this.result="fail";
+    this.success=[];
   }
   //this calls all the functions we want to call
   initialize(){
-    this.validateOnEntry();
     this.validateOnSubmit();
   }
   validateOnSubmit(){
     //we find the form and add a submit event listener on it
     this.form.addEventListener("submit",(e)=>{
       e.preventDefault();
+      this.success=[];
       //we look at our fields array and for each field, we get the input(trimmed of course)
       //we run our validateFields function to check if that input meets our criteria
       this.fields.forEach((field)=>{
@@ -25,54 +26,42 @@ class FormValidator{
       })
     })
   }
-  validateOnEntry(){
-    this.fields.forEach((field)=>{
-      field.addEventListener("input",(e)=>{
-        const textValue=field.value.trim();
-        this.validateFields(textValue,field)
-      })
-    })
-  }
   validateFields(value,formField){
     //the div element that holds our formField
     const numberValue=+value;
     const formItemEl=formField.parentElement.parentElement;
-    if(value===""){
-      //clear the error-message of formItemEL otherwise textContent of formItem wil include more than just name of the field
-      formItemEl.querySelector("#error_message").textContent=""
-      this.getResultStatus("error",formField,`${formItemEl.textContent} cannot be left blank`)
-      this.result="fail"
-    }else{
-      this.getResultStatus("success",formField,null)
-      this.result="correct";
+
+    if(formField.id==="title"){
+      this.checkIfString(value,formField,formItemEl)
     }
 
-    if(formField.type==="email"){
-      const re=/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
-      if(re.test(value)){
-        this.getResultStatus("success",formField,null);
-        this.result="correct"
+    if(formField.id==="author"){
+      this.checkIfString(value,formField,formItemEl);
+    }
+
+    if(formField.id==="total_pages"){
+      if(formField.value===""){
+        this.getResultStatus("error",formField,"Please provide a valid number")
       }else{
-        this.getResultStatus("error",formField,"Please put in a valid email")
-        this.result="fail"
+        if(numberValue||numberValue===0){
+          this.getResultStatus("success",formField,null);
+          this.addToSuccess(formField);
+        }else{
+          this.getResultStatus("error",formField,"Please provide a valid number");
+        }
       }
     }
-    if(formField.id==="password_confirm"){
-      if(document.querySelector("#password").value===formField.value){
-        this.getResultStatus("success",formField,null)
-        this.result="correct";
+
+    if(formField.id==="current_page"){
+      if(formField.value===""){
+        this.getResultStatus("error",formField,"Please provide a valid number")
       }else{
-        this.getResultStatus("error",formField,"Passwords do not match.")
-        this.status="fail"
-      }
-    }
-    if(formField.id==="total_pages"||formField.id==="current_page"){
-      if(numberValue&&numberValue!==0){
-        this.getResultStatus("success",formField,null);
-        this.result="correct"
-      }else{
-        this.getResultStatus("error",formField,"Please add a page number");
-        this.result="fail"
+        if((numberValue||numberValue===0)&&numberValue<=+document.querySelector("#total_pages").value&&!(numberValue<0)){
+          this.getResultStatus("success",formField,null);
+          this.addToSuccess(formField);
+        }else{
+          this.getResultStatus("error",formField,"Please provide a valid page number");
+        }
       }
     }
   }
@@ -102,7 +91,38 @@ class FormValidator{
       }
     }
   }
-
+  addToSuccess(formField){
+    if(!this.success.includes(formField)){
+      this.success.push(formField);
+    }
+  }
+  checkIfString(value,formField,parentElement){
+    if(formField.value===""){
+      //clear the text content of the error-message otherwise textContent of the parent element wil include more than just name of the field.
+      parentElement.querySelector("#error_message").textContent=""
+      this.getResultStatus("error",formField,`${parentElement.textContent} cannot be left blank`)
+    }else{
+      this.getResultStatus("success",formField,null)
+      this.addToSuccess(formField);
+    }
+  }
+  checkIfEmail(value,formField,parentElement){
+    const re=/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+    if(re.test(value)){
+      this.getResultStatus("success",formField,null);
+      this.addToSuccess(formField)
+    }else{
+      this.getResultStatus("error",formField,"Please put in a valid email")
+    }
+  }
+  checkIfPasswordConfirm(formField,parentElement){
+    if(document.querySelector("#password").value===formField.value){
+      this.getResultStatus("success",formField,null)
+      this.addToSuccess(formField)
+    }else{
+      this.getResultStatus("error",formField,"Passwords do not match.")
+    }
+  }
 }
 
 

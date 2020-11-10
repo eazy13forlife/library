@@ -16289,13 +16289,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //need a class of success and error(most likely on the div element that contains the form field and everything it contains)
 //need an id of password and password_confirm for the input fields
 //need an id of error_message
+
 var FormValidator = function () {
   function FormValidator(form, fields) {
     _classCallCheck(this, FormValidator);
 
     this.form = form;
     this.fields = fields;
-    this.result = "fail";
+    this.success = [];
   }
   //this calls all the functions we want to call
 
@@ -16303,7 +16304,6 @@ var FormValidator = function () {
   _createClass(FormValidator, [{
     key: "initialize",
     value: function initialize() {
-      this.validateOnEntry();
       this.validateOnSubmit();
     }
   }, {
@@ -16314,6 +16314,7 @@ var FormValidator = function () {
       //we find the form and add a submit event listener on it
       this.form.addEventListener("submit", function (e) {
         e.preventDefault();
+        _this.success = [];
         //we look at our fields array and for each field, we get the input(trimmed of course)
         //we run our validateFields function to check if that input meets our criteria
         _this.fields.forEach(function (field) {
@@ -16324,59 +16325,43 @@ var FormValidator = function () {
       });
     }
   }, {
-    key: "validateOnEntry",
-    value: function validateOnEntry() {
-      var _this2 = this;
-
-      this.fields.forEach(function (field) {
-        field.addEventListener("input", function (e) {
-          var textValue = field.value.trim();
-          _this2.validateFields(textValue, field);
-        });
-      });
-    }
-  }, {
     key: "validateFields",
     value: function validateFields(value, formField) {
       //the div element that holds our formField
       var numberValue = +value;
       var formItemEl = formField.parentElement.parentElement;
-      if (value === "") {
-        //clear the error-message of formItemEL otherwise textContent of formItem wil include more than just name of the field
-        formItemEl.querySelector("#error_message").textContent = "";
-        this.getResultStatus("error", formField, formItemEl.textContent + " cannot be left blank");
-        this.result = "fail";
-      } else {
-        this.getResultStatus("success", formField, null);
-        this.result = "correct";
+
+      if (formField.id === "title") {
+        this.checkIfString(value, formField, formItemEl);
       }
 
-      if (formField.type === "email") {
-        var re = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-        if (re.test(value)) {
-          this.getResultStatus("success", formField, null);
-          this.result = "correct";
+      if (formField.id === "author") {
+        this.checkIfString(value, formField, formItemEl);
+      }
+
+      if (formField.id === "total_pages") {
+        if (formField.value === "") {
+          this.getResultStatus("error", formField, "Please provide a valid number");
         } else {
-          this.getResultStatus("error", formField, "Please put in a valid email");
-          this.result = "fail";
+          if (numberValue || numberValue === 0) {
+            this.getResultStatus("success", formField, null);
+            this.addToSuccess(formField);
+          } else {
+            this.getResultStatus("error", formField, "Please provide a valid number");
+          }
         }
       }
-      if (formField.id === "password_confirm") {
-        if (document.querySelector("#password").value === formField.value) {
-          this.getResultStatus("success", formField, null);
-          this.result = "correct";
+
+      if (formField.id === "current_page") {
+        if (formField.value === "") {
+          this.getResultStatus("error", formField, "Please provide a valid number");
         } else {
-          this.getResultStatus("error", formField, "Passwords do not match.");
-          this.status = "fail";
-        }
-      }
-      if (formField.id === "total_pages" || formField.id === "current_page") {
-        if (numberValue && numberValue !== 0) {
-          this.getResultStatus("success", formField, null);
-          this.result = "correct";
-        } else {
-          this.getResultStatus("error", formField, "Please add a page number");
-          this.result = "fail";
+          if ((numberValue || numberValue === 0) && numberValue <= +document.querySelector("#total_pages").value && !(numberValue < 0)) {
+            this.getResultStatus("success", formField, null);
+            this.addToSuccess(formField);
+          } else {
+            this.getResultStatus("error", formField, "Please provide a valid page number");
+          }
         }
       }
     }
@@ -16406,6 +16391,46 @@ var FormValidator = function () {
         if (!formItemEl.classList.contains("success")) {
           formItemEl.classList.add("success");
         }
+      }
+    }
+  }, {
+    key: "addToSuccess",
+    value: function addToSuccess(formField) {
+      if (!this.success.includes(formField)) {
+        this.success.push(formField);
+      }
+    }
+  }, {
+    key: "checkIfString",
+    value: function checkIfString(value, formField, parentElement) {
+      if (formField.value === "") {
+        //clear the text content of the error-message otherwise textContent of the parent element wil include more than just name of the field.
+        parentElement.querySelector("#error_message").textContent = "";
+        this.getResultStatus("error", formField, parentElement.textContent + " cannot be left blank");
+      } else {
+        this.getResultStatus("success", formField, null);
+        this.addToSuccess(formField);
+      }
+    }
+  }, {
+    key: "checkIfEmail",
+    value: function checkIfEmail(value, formField, parentElement) {
+      var re = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+      if (re.test(value)) {
+        this.getResultStatus("success", formField, null);
+        this.addToSuccess(formField);
+      } else {
+        this.getResultStatus("error", formField, "Please put in a valid email");
+      }
+    }
+  }, {
+    key: "checkIfPasswordConfirm",
+    value: function checkIfPasswordConfirm(formField, parentElement) {
+      if (document.querySelector("#password").value === formField.value) {
+        this.getResultStatus("success", formField, null);
+        this.addToSuccess(formField);
+      } else {
+        this.getResultStatus("error", formField, "Passwords do not match.");
       }
     }
   }]);
@@ -16440,7 +16465,7 @@ exports.FormValidator = FormValidator;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toggleCompleted = exports.removeBook = exports.myLibrary = exports.formEl = exports.validator = exports.saveLibrary = exports.getMyLibrary = exports.addBookToLibrary = undefined;
+exports.fieldsArray = exports.changePageNumber = exports.completedEl = exports.toggleCompleted = exports.removeBook = exports.myLibrary = exports.formEl = exports.validator = exports.saveLibrary = exports.getMyLibrary = exports.addBookToLibrary = undefined;
 
 var _classes = __webpack_require__(/*! ./classes.js */ "./source/classes.js");
 
@@ -16472,6 +16497,10 @@ var getMyLibrary = function getMyLibrary() {
 
 //set myLibrary array equal to the return value in getMyLibrary function
 var myLibrary = getMyLibrary();
+
+var returnMyLibrary = function returnMyLibrary() {
+  return myLibrary;
+};
 
 //add a book to our library Array
 var addBookToLibrary = function addBookToLibrary() {
@@ -16518,7 +16547,24 @@ var toggleCompleted = function toggleCompleted(bookId) {
     saveLibrary();
   }
 };
-
+var changePageNumber = function changePageNumber(value, bookId) {
+  var numberValue = +value;
+  if (numberValue || numberValue === 0) {
+    var book = myLibrary.find(function (book) {
+      return book.id === bookId;
+    });
+    if (book) {
+      if (numberValue <= book["total pages"] && !(numberValue <= 0)) {
+        book["current page"] = value;
+        saveLibrary();
+      } else {
+        document.querySelector(".new-one").classList.add("#class");
+        document.querySelector(".error_message").textContent = "Please enter valid number";
+        changePageNumber(value, bookId);
+      }
+    }
+  }
+};
 exports.addBookToLibrary = addBookToLibrary;
 exports.getMyLibrary = getMyLibrary;
 exports.saveLibrary = saveLibrary;
@@ -16527,6 +16573,9 @@ exports.formEl = formEl;
 exports.myLibrary = myLibrary;
 exports.removeBook = removeBook;
 exports.toggleCompleted = toggleCompleted;
+exports.completedEl = completedEl;
+exports.changePageNumber = changePageNumber;
+exports.fieldsArray = fieldsArray;
 
 /***/ }),
 
@@ -16567,11 +16616,12 @@ var _classes = __webpack_require__(/*! ./classes.js */ "./source/classes.js");
 
 var _views = __webpack_require__(/*! ./views.js */ "./source/views.js");
 
+localStorage.clear();
 //our second submit event when we click Add Book.
 _functions.formEl.addEventListener("submit", function (e) {
   e.preventDefault();
   //validator.initialize was already run in functions.js, so submit event listener was already added on the form. So, that event listener will run first(and validify our input along with telling us if result was correct or fail) before this event will run.
-  if (_functions.validator.result === "correct") {
+  if (_functions.validator.success.length === 4) {
     (0, _functions.addBookToLibrary)();
     _functions.formEl.style.display = "none";
     (0, _views.displayBooks)();
@@ -16580,12 +16630,24 @@ _functions.formEl.addEventListener("submit", function (e) {
 
 //event listner when we click the plus sign, our form pops up in the center
 document.querySelector("#plus_sign").addEventListener("click", function (e) {
+  _functions.fieldsArray.forEach(function (field) {
+    field.value = "";
+    field.parentElement.parentElement.classList.remove("error");
+  });
   _functions.formEl.style.display = "block";
 });
 
 //event listener when we click the X on our form
 document.querySelector("#close_form").addEventListener("click", function (e) {
   _functions.formEl.style.display = "none";
+});
+
+document.querySelector("#change_page_form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  (0, _functions.changePageNumber)(e.target.elements.change_page.value, this.id);
+  (0, _views.displayBooks)();
+  this.setAttribute("id", "change_page_form");
+  this.style.display = "none";
 });
 
 /***/ }),
@@ -16644,6 +16706,14 @@ var displayBooks = function displayBooks() {
       displayBooks();
     });
 
+    var editPageCardEl = document.createElement("button");
+    editPageCardEl.textContent = "edit current page";
+    editPageCardEl.addEventListener("click", function (e) {
+      document.querySelector("#change_page").value = "";
+      document.querySelector("#change_page_form").style.display = "block";
+      document.querySelector("#change_page_form").setAttribute("id", book.id);
+    });
+
     //create a toggle button and add event listener so that when you click it, book.completed toggles between true and false and shows the appropriate message
     var toggleCompletedEl = document.createElement("button");
     toggleCompletedEl.setAttribute("id", "toggle_button");
@@ -16683,11 +16753,11 @@ var displayBooks = function displayBooks() {
     if (book.completed === true) {
       var completedCardEl = document.createElement("h3");
       completedCardEl.textContent = "Finished!";
-      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, completedCardEl, removeCardEl, toggleCompletedEl);
+      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, completedCardEl, removeCardEl, editPageCardEl, toggleCompletedEl);
     } else {
       var currentPageCardEl = document.createElement("p");
       currentPageCardEl.textContent = "on page " + book["current page"];
-      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, currentPageCardEl, removeCardEl, toggleCompletedEl);
+      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, currentPageCardEl, removeCardEl, editPageCardEl, toggleCompletedEl);
     }
     document.querySelector(".library").appendChild(infoCard);
   });

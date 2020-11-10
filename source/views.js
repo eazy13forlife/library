@@ -1,4 +1,4 @@
-import{myLibrary,removeBook,toggleCompleted}from "./functions.js"
+import{myLibrary,removeBook,toggleCompleted,changePageNumber}from "./functions.js"
 import{redCheckmark,greenCheckmark}from "./icons.js"
 
 
@@ -32,6 +32,14 @@ const displayBooks=()=>{
     removeCardEl.addEventListener(("click"),(e)=>{
       removeBook(book.id);
       displayBooks();
+    })
+
+    const editPageCardEl=document.createElement("button");
+    editPageCardEl.textContent="edit current page";
+    editPageCardEl.addEventListener("click",(e)=>{
+      document.querySelector("#change_page").value=""
+      document.querySelector("#change_page_form").style.display="block"
+      document.querySelector("#change_page_form").setAttribute("id",book.id)
     })
 
     //create a toggle button and add event listener so that when you click it, book.completed toggles between true and false and shows the appropriate message
@@ -73,11 +81,11 @@ const displayBooks=()=>{
     if(book.completed===true){
       const completedCardEl=document.createElement("h3");
       completedCardEl.textContent=`Finished!`
-      appendChildren(infoCard,titleCardEl,authorCardEl,totalPagesCardEl,completedCardEl,removeCardEl,toggleCompletedEl);
+      appendChildren(infoCard,titleCardEl,authorCardEl,totalPagesCardEl,completedCardEl,removeCardEl,editPageCardEl,toggleCompletedEl);
     }else{
       const currentPageCardEl=document.createElement("p");
       currentPageCardEl.textContent= `on page ${book["current page"]}`;
-      appendChildren(infoCard,titleCardEl,authorCardEl,totalPagesCardEl,currentPageCardEl,removeCardEl,toggleCompletedEl);
+      appendChildren(infoCard,titleCardEl,authorCardEl,totalPagesCardEl,currentPageCardEl,removeCardEl,editPageCardEl,toggleCompletedEl);
     }
     document.querySelector(".library").appendChild(infoCard);
   })

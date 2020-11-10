@@ -51,6 +51,18 @@ form{
   color:red;
   font-size:0.9rem;
 }
+#change_page_form{
+  display:none;
+}
+#change_page_form.open{
+  display:block;
+}
+.new-one.error .error_message{
+  visibility:visible;
+  color:red;
+  font-size:0.9rem;
+}
+
 .form-item.error #error_icon{
   visibility:visible;
 }
@@ -101,6 +113,6 @@ button#toggle_button{
 .checkmark{
 width:48px;
 }
-  
+
 }
 /**end of individual book cards**/

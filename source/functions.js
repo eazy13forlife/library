@@ -12,6 +12,7 @@ let fieldsArray=[titleEl,authorEl,totalPagesEl,currentPageEl]
 //create a validator object with our current form element and our current fieldElements
 const validator=new FormValidator(formEl,fieldsArray)
 
+
 //initialize our validator object from the getgo, so we have the submit event listener on our form and input event listeners on our form fields. These event listeners will run first, since they are the first ones activated. Any of the  same event listener added to the same element wil occur after this one occurs.
 validator.initialize();
 
@@ -29,6 +30,9 @@ const getMyLibrary=()=>{
 //set myLibrary array equal to the return value in getMyLibrary function
 const myLibrary=getMyLibrary();
 
+const returnMyLibrary=()=>{
+  return myLibrary
+}
 
 //add a book to our library Array
 const addBookToLibrary=()=>{
@@ -71,5 +75,20 @@ const toggleCompleted=(bookId)=>{
     saveLibrary();
   }
 }
-
-export{addBookToLibrary,getMyLibrary,saveLibrary,validator,formEl,myLibrary,removeBook,toggleCompleted}
+const changePageNumber=(value,bookId)=>{
+  const numberValue=+value;
+  if(numberValue||numberValue===0){
+    const book=myLibrary.find((book)=>book.id===bookId);
+    if(book){
+      if(numberValue<=book["total pages"]&&!(numberValue<=0)){
+        book["current page"]=value;
+        saveLibrary();
+      }else{
+        document.querySelector(".new-one").classList.add("#class");
+        document.querySelector(".error_message").textContent="Please enter valid number"
+        changePageNumber(value,bookId)
+      }
+    }
+  }
+}
+export{addBookToLibrary,getMyLibrary,saveLibrary,validator,formEl,myLibrary,removeBook,toggleCompleted,completedEl,changePageNumber,fieldsArray}
