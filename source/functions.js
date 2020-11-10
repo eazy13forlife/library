@@ -83,10 +83,12 @@ const changePageNumber=(value,bookId)=>{
       if(numberValue<=book["total pages"]&&!(numberValue<=0)){
         book["current page"]=value;
         saveLibrary();
+        return true;
       }else{
-        document.querySelector(".new-one").classList.add("#class");
-        document.querySelector(".error_message").textContent="Please enter valid number"
-        changePageNumber(value,bookId)
+        console.log("hi")
+        document.querySelector(".new-one").classList.add("error");
+        document.querySelector(".new-one .error_message").textContent="Please enter valid number"
+        return false;
       }
     }
   }

@@ -46,7 +46,10 @@ form{
 .form-item #error_message{
   visibility:hidden;
 }
-.form-item.error #error_message{
+.new-one .error_message{
+  visibility:hidden;
+}
+.new-one.error .error_message{
   visibility:visible;
   color:red;
   font-size:0.9rem;
@@ -56,11 +59,6 @@ form{
 }
 #change_page_form.open{
   display:block;
-}
-.new-one.error .error_message{
-  visibility:visible;
-  color:red;
-  font-size:0.9rem;
 }
 
 .form-item.error #error_icon{

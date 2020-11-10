@@ -30,9 +30,9 @@ document.querySelector("#close_form").addEventListener("click",(e)=>{
 
 document.querySelector("#change_page_form").addEventListener("submit",function(e){
   e.preventDefault();
-  changePageNumber(e.target.elements.change_page.value,this.id)
-  displayBooks();
-  this.setAttribute("id","change_page_form");
-  this.style.display="none"
-
+  if(changePageNumber(e.target.elements.change_page.value,this.id)){
+    displayBooks();
+    this.setAttribute("id","change_page_form");
+    this.style.display="none"
+  }
 })
