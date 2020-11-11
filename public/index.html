@@ -8,54 +8,58 @@
     <link href="./styles/library.css" rel="stylesheet">
   </head>
   <body>
-    <header>
-      <h1>My Library</h1>
-      <input type="submit" value="+" id="plus_sign" />
-    </header>
-    <form action="urlofthepageontheserverthatreceivestheinfo" method="post" id="form">
-      <button id="close_form">X</button>
-      <div class="form-item">
-        <p><label for="title">Title</label></p>
-        <p><input type="text" name="title" id="title" /></p>
-        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
-        <span id="error_message"></span>
-      </div>
-      <div class="form-item">
-        <p><label for="author">Author</label></p>
-        <p><input type="text" name="author" id="author" /></p>
-        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
-        <span id="error_message"></span>
-      </div>
-      <div class="form-item">
-        <p><label for="total_pages">Total Pages</label></p>
-        <p><input type="text" name="author" id="total_pages"/></p>
-        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
-        <span id="error_message"></span>
-      </div>
-      <div class="form-item">
-        <p><label for="current_page">Current Page</label></p>
-        <p><input type="text" name="author" id="current_page"/></p>
-        <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
-        <span id="error_message"></span>
-      </div>
-      <div class="form-item">
-        <input type="checkbox" name="completed" value="yes" id="completed"/><label for="completed">Completed</label>
-      </div>
-      <div class="form-item">
-        <input type="submit" value="Add Book" />
-      </div>
-    </form>
+    <div class="body-container">
+      <header>
+        <h1>My Library</h1>
+        <input type="submit" value="+" id="plus_sign" />
+      </header>
+      <form action="urlofthepageontheserverthatreceivestheinfo" method="post" id="form">
+        <button id="close_form">X</button>
+        <div class="form-item">
+          <p><label for="title">Title</label></p>
+          <p><input type="text" name="title" id="title" /></p>
+          <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+          <span id="error_message"></span>
+        </div>
+        <div class="form-item">
+          <p><label for="author">Author</label></p>
+          <p><input type="text" name="author" id="author" /></p>
+          <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+          <span id="error_message"></span>
+        </div>
+        <div class="form-item">
+          <p><label for="total_pages">Total Pages</label></p>
+          <p><input type="text" name="author" id="total_pages"/></p>
+          <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+          <span id="error_message"></span>
+        </div>
+        <div class="form-item">
+          <p><label for="current_page">Current Page</label></p>
+          <p><input type="text" name="author" id="current_page"/></p>
+          <img src="https://img.icons8.com/ios-filled/16/000000/exclamation-mark.png" id="error_icon"/>
+          <span id="error_message"></span>
+        </div>
+        <div class="form-item">
+          <input type="checkbox" name="completed" value="yes" id="completed"/><label for="completed">Completed</label>
+        </div>
+        <div class="form-item">
+          <input type="submit" value="Add Book" />
+        </div>
+      </form>
 
-    <form action="urlofthepageontheserverthatwillreceivethisinfo" method="post" class="new-one" >
-      <button class="close-edit-page">X</button>
-      <p>Currently on page...</p>
-      <input type="text" name="page number" id="change_page" />
-      <span class="error_message"></span>
-      <button id="change_page_submit">Update</button>
-    </form>
+      <form action="urlofthepageontheserverthatwillreceivethisinfo" method="post" class="new-one" >
+        <button class="close-edit-page">X</button>
+        <p>Currently on page...</p>
+        <div class="edit-page-container">
+          <input type="text" name="page number" id="change_page" placeholder="page #" />
+          <span class="error_message"></span>
+          <button id="change_page_submit">Update</button>
+        </div>
+      </form>
 
-    <div class="library">
+      <div class="library">
 
+      </div>
     </div>
 
 

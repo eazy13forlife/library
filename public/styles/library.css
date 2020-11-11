@@ -18,7 +18,19 @@ body{
   --book-clr:rgb(229, 213, 82);
   --title-clr:rgb(15, 99, 144);
 }
+.body-container{
 
+}
+.body-container:after{
+  position:absolute;
+  content:"";
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  background-color:black;
+  opacity:0.7;
+}
 /**header**/
 header{
   background-color:var(--title-clr);
@@ -64,7 +76,7 @@ div.info-card{
   width:100%;
   background-color:var(--book-clr);
   border-radius:10px;
-  border-top-right-radius:15px;
+  border-top-right-radius:10px;
   font-size:1.2rem;
   position:relative;
   box-shadow:2px 3px 4px grey;
@@ -98,6 +110,7 @@ button.remove-card{
   color:var(--title-clr);
   border:2px solid var(--title-clr);
   font-weight:bold;
+  font-size:1.2rem;
 }
 
 div.info-card h1{
@@ -148,6 +161,7 @@ form{
    z-index:10;
    display:none;
    border-radius:20px;
+   padding-top:1em;
 
 }
 form p{
@@ -205,10 +219,14 @@ button#close_form{
   background:none;
   border:2px solid var(--book-clr);
   border-radius:50%;
-  font-size:1.5rem;
+  font-size:1.3rem;
   color:var(--book-clr);
   margin-left:0.1em;
   margin-top:0.1em;
+  position:absolute;
+  right:2px;
+  top:3px;
+
 }
 button.close-edit-page{
   background:none;
@@ -220,4 +238,41 @@ button.close-edit-page{
 button#close_form:active{
   color:var(--book-clr);
 }
+input[type="submit"]{
+  background-color:var(--book-clr);
+  border:none;
+  color:black;
+  padding:0.2em 0.5em;
+  font-size:0.9rem;
+}
 /**end of form element**/
+
+
+/**second form**/
+.new-one{
+  padding-top:1em;
+  padding-bottom:1em;
+}
+.new-one p{
+  text-align:center;
+}
+.edit-page-container{
+  display:flex;
+  width:100%;
+  margin-top:0.3em;
+  justify-content:center;
+}
+button.close-edit-page{
+  position:absolute;
+  right:5px;
+  top:2px;
+  color:var(--book-clr);
+  border-color:var(--book-clr);
+}
+.new-one span{
+  display:none;
+}
+.new-one input{
+display:block;
+width:80px;
+}
