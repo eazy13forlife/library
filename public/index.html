@@ -8,8 +8,10 @@
     <link href="./styles/library.css" rel="stylesheet">
   </head>
   <body>
-    <h1>Library</h1>
-    <input type="submit" value="+" id="plus_sign" />
+    <header>
+      <h1>My Library</h1>
+      <input type="submit" value="+" id="plus_sign" />
+    </header>
     <form action="urlofthepageontheserverthatreceivestheinfo" method="post" id="form">
       <button id="close_form">X</button>
       <div class="form-item">
@@ -44,7 +46,8 @@
       </div>
     </form>
 
-    <form action="urlofthepageontheserverthatwillreceivethisinfo" method="post" id="change_page_form" class="new-one" >
+    <form action="urlofthepageontheserverthatwillreceivethisinfo" method="post" class="new-one" >
+      <button class="close-edit-page">X</button>
       <p>Change page number</p>
       <input type="text" name="page number" id="change_page" />
       <span class="error_message"></span>

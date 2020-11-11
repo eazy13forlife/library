@@ -30,10 +30,6 @@ const getMyLibrary=()=>{
 //set myLibrary array equal to the return value in getMyLibrary function
 const myLibrary=getMyLibrary();
 
-const returnMyLibrary=()=>{
-  return myLibrary
-}
-
 //add a book to our library Array
 const addBookToLibrary=()=>{
     myLibrary.push({
@@ -50,7 +46,6 @@ const addBookToLibrary=()=>{
     })
     completedEl.checked=false;
     //save the book to our myLibrary array
-    saveLibrary();
 }
 
 //save book to our localStorage
@@ -82,7 +77,6 @@ const changePageNumber=(value,bookId)=>{
     if(book){
       if(numberValue<=book["total pages"]&&!(numberValue<=0)){
         book["current page"]=value;
-        saveLibrary();
         return true;
       }else{
         document.querySelector(".new-one").classList.add("error");

@@ -16508,10 +16508,6 @@ var getMyLibrary = function getMyLibrary() {
 //set myLibrary array equal to the return value in getMyLibrary function
 var myLibrary = getMyLibrary();
 
-var returnMyLibrary = function returnMyLibrary() {
-  return myLibrary;
-};
-
 //add a book to our library Array
 var addBookToLibrary = function addBookToLibrary() {
   myLibrary.push({
@@ -16528,7 +16524,6 @@ var addBookToLibrary = function addBookToLibrary() {
   });
   completedEl.checked = false;
   //save the book to our myLibrary array
-  saveLibrary();
 };
 
 //save book to our localStorage
@@ -16566,7 +16561,6 @@ var changePageNumber = function changePageNumber(value, bookId) {
     if (book) {
       if (numberValue <= book["total pages"] && !(numberValue <= 0)) {
         book["current page"] = value;
-        saveLibrary();
         return true;
       } else {
         document.querySelector(".new-one").classList.add("error");
@@ -16627,7 +16621,10 @@ var _classes = __webpack_require__(/*! ./classes.js */ "./source/classes.js");
 
 var _views = __webpack_require__(/*! ./views.js */ "./source/views.js");
 
-localStorage.clear();
+console.log(document.querySelector("body"));
+//when page is reloaded,display all the books in the library
+(0, _views.displayBooks)();
+
 //our second submit event when we click Add Book.
 _functions.formEl.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -16635,31 +16632,43 @@ _functions.formEl.addEventListener("submit", function (e) {
   if (_functions.validator.success.length === 4) {
     (0, _functions.addBookToLibrary)();
     _functions.formEl.style.display = "none";
+    //this will save our library only when we click submit. If we exit our of the form, we don't want anything to be saved.
+    (0, _functions.saveLibrary)();
     (0, _views.displayBooks)();
   }
 });
 
-//event listner when we click the plus sign, our form pops up in the center
+//event listner when we click the plus sign.
 document.querySelector("#plus_sign").addEventListener("click", function (e) {
+  //first remove all the textcontent from our form
   _functions.fieldsArray.forEach(function (field) {
     field.value = "";
     field.parentElement.parentElement.classList.remove("error");
   });
+  //show our form on the screen
   _functions.formEl.style.display = "block";
 });
 
 //event listener when we click the X on our form
 document.querySelector("#close_form").addEventListener("click", function (e) {
+  //remove our form box
   _functions.formEl.style.display = "none";
 });
 
-document.querySelector("#change_page_form").addEventListener("submit", function (e) {
+//event listener when we click submit on our change page number
+document.querySelector(".new-one").addEventListener("submit", function (e) {
   e.preventDefault();
   if ((0, _functions.changePageNumber)(e.target.elements.change_page.value, this.id)) {
+    //this will save our library only when we click submit. If we exit our of the form, we don't want anything to be saved.
+    (0, _functions.saveLibrary)();
+    //show all of our books
     (0, _views.displayBooks)();
-    this.setAttribute("id", "change_page_form");
+    //remove that box from the screen
     this.style.display = "none";
   }
+});
+document.querySelector(".close-edit-page").addEventListener("click", function (e) {
+  document.querySelector(".new-one").style.display = "none";
 });
 
 /***/ }),
@@ -16701,30 +16710,45 @@ var displayBooks = function displayBooks() {
   _functions.myLibrary.forEach(function (book) {
     var infoCard = document.createElement("div");
     infoCard.classList.add("info-card");
+
+    var infoCardLeft = document.createElement("div");
+    infoCardLeft.classList.add("card-left");
+
+    var infoCardRight = document.createElement("div");
+    infoCardRight.classList.add("card-right");
+
     var titleCardEl = document.createElement("H1");
     titleCardEl.textContent = book.title;
 
     var authorCardEl = document.createElement("p");
-    authorCardEl.textContent = "by " + book.author;
+    authorCardEl.innerHTML = "by <span class=\"author\">" + book.author + "</span>";
 
     var totalPagesCardEl = document.createElement("p");
-    totalPagesCardEl.textContent = book["total pages"] + " pages";
+    totalPagesCardEl.innerHTML = "<span class=\"page\">" + book["total pages"] + "</span> pages";
 
     //create remove card button and add event listener so that when you click it, the book is removed from the library
     var removeCardEl = document.createElement("button");
-    removeCardEl.textContent = "Remove";
+    removeCardEl.textContent = "X";
+    removeCardEl.classList.add('remove-card');
+    removeCardEl.setAttribute("style", "background:none; border-radius:50%;");
     removeCardEl.addEventListener("click", function (e) {
       (0, _functions.removeBook)(book.id);
       displayBooks();
     });
 
+    //create an edit page button. When you click it,our edit form in our html pops up
     var editPageCardEl = document.createElement("button");
-    editPageCardEl.textContent = "edit current page";
+    editPageCardEl.textContent = "edit page #";
+    editPageCardEl.setAttribute("style", "border:none;border-radius:20px;");
+    editPageCardEl.classList.add("edit-page-number");
     editPageCardEl.addEventListener("click", function (e) {
+      //first remove any text content from our form, so when it pops up,everything is blank
       document.querySelector(".new-one .error_message").textContent = "";
       document.querySelector("#change_page").value = "";
-      document.querySelector("#change_page_form").style.display = "block";
-      document.querySelector("#change_page_form").setAttribute("id", book.id);
+      //display our form to the screen
+      document.querySelector(".new-one").style.display = "block";
+      //add an id attribute to the form in our html that is equal to the uuid of the book where we just clicked edit current page. So, we can use the id of this edit page form and match it with the id of the book in our myLibraryArray, when we click submit
+      document.querySelector(".new-one").setAttribute("id", book.id);
     });
 
     //create a toggle button and add event listener so that when you click it, book.completed toggles between true and false and shows the appropriate message
@@ -16738,40 +16762,26 @@ var displayBooks = function displayBooks() {
     } else {
       image.setAttribute("src", _icons.greenCheckmark);
     }
-    /*
-    //now if you hover over the checkmark,thats an indication that you want to change status of your book from finished to not finished or vice versa. If you havent finished the book, but hover over the checkmark, it will show red, which means the book is finished.If you have finished the book, but hover over the checkmark, it will show green meaning that the book is not finished.
-    image.addEventListener("mouseover",(e)=>{
-      if(book.completed===false){
-        image.setAttribute("src",redCheckmark)
-      }else{
-        image.setAttribute("src",greenCheckmark)
-      }
-    })
-    //when mouseout, transition to the original color
-    image.addEventListener("mouseout",(e)=>{
-      if(book.completed===true){
-        image.setAttribute("src",redCheckmark)
-      }else{
-        image.setAttribute("src",greenCheckmark)
-      }
-    */
-    //we append the image to the toggle button
+
     toggleCompletedEl.appendChild(image);
     toggleCompletedEl.addEventListener("click", function (e) {
       (0, _functions.toggleCompleted)(book.id);
       displayBooks();
     });
 
-    //if the book in the library is completed
+    //if the book in the library has been read
     if (book.completed === true) {
       var completedCardEl = document.createElement("h3");
       completedCardEl.textContent = "Finished!";
-      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, completedCardEl, removeCardEl, editPageCardEl, toggleCompletedEl);
+      appendChildren(infoCardLeft, titleCardEl, authorCardEl, totalPagesCardEl, completedCardEl, editPageCardEl);
+      appendChildren(infoCardRight, removeCardEl, toggleCompletedEl);
     } else {
       var currentPageCardEl = document.createElement("p");
-      currentPageCardEl.textContent = "on page " + book["current page"];
-      appendChildren(infoCard, titleCardEl, authorCardEl, totalPagesCardEl, currentPageCardEl, removeCardEl, editPageCardEl, toggleCompletedEl);
+      currentPageCardEl.innerHTML = "on page <span class=\"page\">" + book["current page"] + "</span>";
+      appendChildren(infoCardLeft, titleCardEl, authorCardEl, totalPagesCardEl, currentPageCardEl, editPageCardEl);
+      appendChildren(infoCardRight, removeCardEl, toggleCompletedEl);
     }
+    appendChildren(infoCard, infoCardLeft, infoCardRight);
     document.querySelector(".library").appendChild(infoCard);
   });
 };
