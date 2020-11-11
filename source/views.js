@@ -37,6 +37,7 @@ const displayBooks=()=>{
     const editPageCardEl=document.createElement("button");
     editPageCardEl.textContent="edit current page";
     editPageCardEl.addEventListener("click",(e)=>{
+      document.querySelector(".new-one .error_message").textContent=""
       document.querySelector("#change_page").value=""
       document.querySelector("#change_page_form").style.display="block"
       document.querySelector("#change_page_form").setAttribute("id",book.id)

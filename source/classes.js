@@ -1,7 +1,7 @@
 //need a class of success and error(most likely on the div element that contains the form field and everything it contains)
 //need an id of password and password_confirm for the input fields
 //need an id of error_message
-
+import{completedEl}from"./functions.js"
 class FormValidator{
   constructor(form,fields){
     this.form=form;
@@ -53,14 +53,22 @@ class FormValidator{
     }
 
     if(formField.id==="current_page"){
-      if(formField.value===""){
-        this.getResultStatus("error",formField,"Please provide a valid number")
-      }else{
-        if((numberValue||numberValue===0)&&numberValue<=+document.querySelector("#total_pages").value&&!(numberValue<0)){
-          this.getResultStatus("success",formField,null);
+      if(completedEl.checked){
+        if(formField.value===""){
           this.addToSuccess(formField);
         }else{
-          this.getResultStatus("error",formField,"Please provide a valid page number");
+          this.getResultStatus("error",formField,"Uncheck completed")
+        }
+      }else{
+        if(formField.value===""){
+          this.getResultStatus("error",formField,"Please provide a valid number")
+        }else{
+          if((numberValue||numberValue===0)&&numberValue<=+document.querySelector("#total_pages").value&&!(numberValue<0)){
+            this.getResultStatus("success",formField,null);
+            this.addToSuccess(formField);
+          }else{
+            this.getResultStatus("error",formField,"Please provide a valid page number");
+          }
         }
       }
     }

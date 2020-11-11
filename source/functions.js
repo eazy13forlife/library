@@ -85,7 +85,6 @@ const changePageNumber=(value,bookId)=>{
         saveLibrary();
         return true;
       }else{
-        console.log("hi")
         document.querySelector(".new-one").classList.add("error");
         document.querySelector(".new-one .error_message").textContent="Please enter valid number"
         return false;

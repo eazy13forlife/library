@@ -16281,14 +16281,16 @@ module.exports = g;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.FormValidator = exports.Book = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-//need a class of success and error(most likely on the div element that contains the form field and everything it contains)
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //need a class of success and error(most likely on the div element that contains the form field and everything it contains)
 //need an id of password and password_confirm for the input fields
 //need an id of error_message
+
+
+var _functions = __webpack_require__(/*! ./functions.js */ "./source/functions.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FormValidator = function () {
   function FormValidator(form, fields) {
@@ -16353,14 +16355,22 @@ var FormValidator = function () {
       }
 
       if (formField.id === "current_page") {
-        if (formField.value === "") {
-          this.getResultStatus("error", formField, "Please provide a valid number");
-        } else {
-          if ((numberValue || numberValue === 0) && numberValue <= +document.querySelector("#total_pages").value && !(numberValue < 0)) {
-            this.getResultStatus("success", formField, null);
+        if (_functions.completedEl.checked) {
+          if (formField.value === "") {
             this.addToSuccess(formField);
           } else {
-            this.getResultStatus("error", formField, "Please provide a valid page number");
+            this.getResultStatus("error", formField, "Uncheck completed");
+          }
+        } else {
+          if (formField.value === "") {
+            this.getResultStatus("error", formField, "Please provide a valid number");
+          } else {
+            if ((numberValue || numberValue === 0) && numberValue <= +document.querySelector("#total_pages").value && !(numberValue < 0)) {
+              this.getResultStatus("success", formField, null);
+              this.addToSuccess(formField);
+            } else {
+              this.getResultStatus("error", formField, "Please provide a valid page number");
+            }
           }
         }
       }
@@ -16559,7 +16569,6 @@ var changePageNumber = function changePageNumber(value, bookId) {
         saveLibrary();
         return true;
       } else {
-        console.log("hi");
         document.querySelector(".new-one").classList.add("error");
         document.querySelector(".new-one .error_message").textContent = "Please enter valid number";
         return false;
@@ -16712,6 +16721,7 @@ var displayBooks = function displayBooks() {
     var editPageCardEl = document.createElement("button");
     editPageCardEl.textContent = "edit current page";
     editPageCardEl.addEventListener("click", function (e) {
+      document.querySelector(".new-one .error_message").textContent = "";
       document.querySelector("#change_page").value = "";
       document.querySelector("#change_page_form").style.display = "block";
       document.querySelector("#change_page_form").setAttribute("id", book.id);

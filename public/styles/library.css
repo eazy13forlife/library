@@ -46,6 +46,10 @@ form{
 .form-item #error_message{
   visibility:hidden;
 }
+.form-item.error #error_message{
+  visibility:visible;
+  color:red;
+}
 .new-one .error_message{
   visibility:hidden;
 }
