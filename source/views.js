@@ -49,6 +49,7 @@ const displayBooks=()=>{
     editPageCardEl.setAttribute("style","border:none;border-radius:20px;")
     editPageCardEl.classList.add("edit-page-number")
     editPageCardEl.addEventListener("click",(e)=>{
+      document.querySelector(".dark-mode").style.display="block";
       if(formEl.style.display==="block"){
 
       }else{

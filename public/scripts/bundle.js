@@ -16635,12 +16635,14 @@ _functions.formEl.addEventListener("submit", function (e) {
     //this will save our library only when we click submit. If we exit our of the form, we don't want anything to be saved.
     (0, _functions.saveLibrary)();
     (0, _views.displayBooks)();
+    document.querySelector(".dark-mode").style.display = "none";
   }
 });
 
 //event listner when we click the plus sign.
 document.querySelector("#plus_sign").addEventListener("click", function (e) {
   //first remove all the textcontent from our form
+  document.querySelector(".dark-mode").style.display = "block";
   _functions.fieldsArray.forEach(function (field) {
     field.value = "";
     field.parentElement.parentElement.classList.remove("error");
@@ -16653,6 +16655,7 @@ document.querySelector("#plus_sign").addEventListener("click", function (e) {
 document.querySelector("#close_form").addEventListener("click", function (e) {
   //remove our form box
   _functions.formEl.style.display = "none";
+  document.querySelector(".dark-mode").style.display = "none";
 });
 
 //event listener when we click submit on our change page number
@@ -16665,10 +16668,14 @@ document.querySelector(".new-one").addEventListener("submit", function (e) {
     (0, _views.displayBooks)();
     //remove that box from the screen
     this.style.display = "none";
+    document.querySelector(".dark-mode").style.display = "none";
   }
 });
+
+//event listener when we exit out of our change page number form
 document.querySelector(".close-edit-page").addEventListener("click", function (e) {
   document.querySelector(".new-one").style.display = "none";
+  document.querySelector(".dark-mode").style.display = "none";
 });
 
 /***/ }),
@@ -16742,6 +16749,7 @@ var displayBooks = function displayBooks() {
     editPageCardEl.setAttribute("style", "border:none;border-radius:20px;");
     editPageCardEl.classList.add("edit-page-number");
     editPageCardEl.addEventListener("click", function (e) {
+      document.querySelector(".dark-mode").style.display = "block";
       if (_functions.formEl.style.display === "block") {} else {
         //first remove any text content from our form, so when it pops up,everything is blank
         document.querySelector(".new-one .error_message").textContent = "";
