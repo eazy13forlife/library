@@ -16475,7 +16475,7 @@ exports.FormValidator = FormValidator;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fieldsArray = exports.changePageNumber = exports.completedEl = exports.toggleCompleted = exports.removeBook = exports.myLibrary = exports.formEl = exports.validator = exports.saveLibrary = exports.getMyLibrary = exports.addBookToLibrary = undefined;
+exports.updatePageForm = exports.darkModeEl = exports.fieldsArray = exports.changePageNumber = exports.completedEl = exports.toggleCompleted = exports.removeBook = exports.myLibrary = exports.formEl = exports.validator = exports.saveLibrary = exports.getMyLibrary = exports.addBookToLibrary = undefined;
 
 var _classes = __webpack_require__(/*! ./classes.js */ "./source/classes.js");
 
@@ -16488,6 +16488,8 @@ var totalPagesEl = document.querySelector("#total_pages");
 var currentPageEl = document.querySelector("#current_page");
 var completedEl = document.querySelector("#completed");
 var fieldsArray = [titleEl, authorEl, totalPagesEl, currentPageEl];
+var darkModeEl = document.querySelector(".dark-mode");
+var updatePageForm = document.querySelector(".new-one");
 
 //create a validator object with our current form element and our current fieldElements
 var validator = new _classes.FormValidator(formEl, fieldsArray);
@@ -16581,6 +16583,8 @@ exports.toggleCompleted = toggleCompleted;
 exports.completedEl = completedEl;
 exports.changePageNumber = changePageNumber;
 exports.fieldsArray = fieldsArray;
+exports.darkModeEl = darkModeEl;
+exports.updatePageForm = updatePageForm;
 
 /***/ }),
 
@@ -16635,14 +16639,14 @@ _functions.formEl.addEventListener("submit", function (e) {
     //this will save our library only when we click submit. If we exit our of the form, we don't want anything to be saved.
     (0, _functions.saveLibrary)();
     (0, _views.displayBooks)();
-    document.querySelector(".dark-mode").style.display = "none";
+    _functions.darkModeEl.style.display = "none";
   }
 });
 
 //event listner when we click the plus sign.
 document.querySelector("#plus_sign").addEventListener("click", function (e) {
   //first remove all the textcontent from our form
-  document.querySelector(".dark-mode").style.display = "block";
+  _functions.darkModeEl.style.display = "block";
   _functions.fieldsArray.forEach(function (field) {
     field.value = "";
     field.parentElement.parentElement.classList.remove("error");
@@ -16655,7 +16659,7 @@ document.querySelector("#plus_sign").addEventListener("click", function (e) {
 document.querySelector("#close_form").addEventListener("click", function (e) {
   //remove our form box
   _functions.formEl.style.display = "none";
-  document.querySelector(".dark-mode").style.display = "none";
+  _functions.darkModeEl.style.display = "none";
 });
 
 //event listener when we click submit on our change page number
@@ -16668,14 +16672,14 @@ document.querySelector(".new-one").addEventListener("submit", function (e) {
     (0, _views.displayBooks)();
     //remove that box from the screen
     this.style.display = "none";
-    document.querySelector(".dark-mode").style.display = "none";
+    _functions.darkModeEl.style.display = "none";
   }
 });
 
 //event listener when we exit out of our change page number form
 document.querySelector(".close-edit-page").addEventListener("click", function (e) {
   document.querySelector(".new-one").style.display = "none";
-  document.querySelector(".dark-mode").style.display = "none";
+  _functions.darkModeEl.style.display = "none";
 });
 
 /***/ }),
@@ -16749,15 +16753,15 @@ var displayBooks = function displayBooks() {
     editPageCardEl.setAttribute("style", "border:none;border-radius:20px;");
     editPageCardEl.classList.add("edit-page-number");
     editPageCardEl.addEventListener("click", function (e) {
-      document.querySelector(".dark-mode").style.display = "block";
+      _functions.darkModeEl.style.display = "block";
       if (_functions.formEl.style.display === "block") {} else {
         //first remove any text content from our form, so when it pops up,everything is blank
         document.querySelector(".new-one .error_message").textContent = "";
         document.querySelector("#change_page").value = "";
         //display our form to the screen
-        document.querySelector(".new-one").style.display = "block";
+        _functions.updatePageForm.style.display = "block";
         //add an id attribute to the form in our html that is equal to the uuid of the book where we just clicked edit current page. So, we can use the id of this edit page form and match it with the id of the book in our myLibraryArray, when we click submit
-        document.querySelector(".new-one").setAttribute("id", book.id);
+        _functions.updatePageForm.setAttribute("id", book.id);
       }
     });
 

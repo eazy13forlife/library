@@ -1,4 +1,4 @@
-import{addBookToLibrary,validator,formEl,changePageNumber,fieldsArray,saveLibrary} from "./functions.js"
+import{addBookToLibrary,validator,formEl,changePageNumber,fieldsArray,saveLibrary,darkModeEl} from "./functions.js"
 import{FormValidator,Book} from "./classes.js"
 import{displayBooks} from "./views.js"
 console.log(document.querySelector("body"))
@@ -15,14 +15,14 @@ formEl.addEventListener("submit",(e)=>{
     //this will save our library only when we click submit. If we exit our of the form, we don't want anything to be saved.
     saveLibrary();
     displayBooks();
-    document.querySelector(".dark-mode").style.display="none"
+    darkModeEl.style.display="none"
   }
 })
 
 //event listner when we click the plus sign.
 document.querySelector("#plus_sign").addEventListener("click",(e)=>{
   //first remove all the textcontent from our form
-  document.querySelector(".dark-mode").style.display="block"
+  darkModeEl.style.display="block"
   fieldsArray.forEach((field)=>{
     field.value=""
     field.parentElement.parentElement.classList.remove("error")
@@ -35,7 +35,7 @@ document.querySelector("#plus_sign").addEventListener("click",(e)=>{
 document.querySelector("#close_form").addEventListener("click",(e)=>{
   //remove our form box
   formEl.style.display="none"
-  document.querySelector(".dark-mode").style.display="none"
+  darkModeEl.style.display="none"
 })
 
 //event listener when we click submit on our change page number
@@ -48,12 +48,12 @@ document.querySelector(".new-one").addEventListener("submit",function(e){
     displayBooks();
     //remove that box from the screen
     this.style.display="none";
-    document.querySelector(".dark-mode").style.display="none";
+    darkModeEl.style.display="none";
   }
 })
 
 //event listener when we exit out of our change page number form
 document.querySelector(".close-edit-page").addEventListener("click",(e)=>{
   document.querySelector(".new-one").style.display="none";
-  document.querySelector(".dark-mode").style.display="none";
+  darkModeEl.style.display="none";
 })

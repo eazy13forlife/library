@@ -1,4 +1,4 @@
-import{myLibrary,removeBook,toggleCompleted,changePageNumber,formEl}from "./functions.js"
+import{myLibrary,removeBook,toggleCompleted,changePageNumber,formEl,darkModeEl,updatePageForm}from "./functions.js"
 import{redCheckmark,greenCheckmark}from "./icons.js"
 
 
@@ -8,7 +8,6 @@ const appendChildren=(parentElement,...children)=>{
     parentElement.appendChild(child);
   })
 }
-
 
 //look at each item in my array and create a box with all the info needed and then display box to the screen.
 const displayBooks=()=>{
@@ -49,7 +48,7 @@ const displayBooks=()=>{
     editPageCardEl.setAttribute("style","border:none;border-radius:20px;")
     editPageCardEl.classList.add("edit-page-number")
     editPageCardEl.addEventListener("click",(e)=>{
-      document.querySelector(".dark-mode").style.display="block";
+      darkModeEl.style.display="block";
       if(formEl.style.display==="block"){
 
       }else{
@@ -57,9 +56,9 @@ const displayBooks=()=>{
         document.querySelector(".new-one .error_message").textContent=""
         document.querySelector("#change_page").value=""
         //display our form to the screen
-        document.querySelector(".new-one").style.display="block"
+        updatePageForm.style.display="block"
         //add an id attribute to the form in our html that is equal to the uuid of the book where we just clicked edit current page. So, we can use the id of this edit page form and match it with the id of the book in our myLibraryArray, when we click submit
-        document.querySelector(".new-one").setAttribute("id",book.id)
+        updatePageForm.setAttribute("id",book.id)
       }
     })
 

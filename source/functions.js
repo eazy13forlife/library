@@ -7,7 +7,9 @@ const authorEl=document.querySelector("#author");
 const totalPagesEl=document.querySelector("#total_pages");
 const currentPageEl=document.querySelector("#current_page");
 const completedEl=document.querySelector("#completed");
-let fieldsArray=[titleEl,authorEl,totalPagesEl,currentPageEl]
+let fieldsArray=[titleEl,authorEl,totalPagesEl,currentPageEl];
+const darkModeEl=document.querySelector(".dark-mode");
+const updatePageForm=document.querySelector(".new-one")
 
 //create a validator object with our current form element and our current fieldElements
 const validator=new FormValidator(formEl,fieldsArray)
@@ -86,4 +88,4 @@ const changePageNumber=(value,bookId)=>{
     }
   }
 }
-export{addBookToLibrary,getMyLibrary,saveLibrary,validator,formEl,myLibrary,removeBook,toggleCompleted,completedEl,changePageNumber,fieldsArray}
+export{addBookToLibrary,getMyLibrary,saveLibrary,validator,formEl,myLibrary,removeBook,toggleCompleted,completedEl,changePageNumber,fieldsArray,darkModeEl,updatePageForm}
